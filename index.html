@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Mode Toggle</title>
+  <style>
+    :root {
+      --background-color: #ffffff;
+      --text-color: #000000;
+      --transition-duration: 0.3s;
+    }
+
+    [data-theme="dark"] {
+      --background-color: #121212;
+      --text-color: #ffffff;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: background-color var(--transition-duration), color var(--transition-duration);
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .toggle-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--text-color);
+      color: var(--background-color);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color var(--transition-duration), color var(--transition-duration);
+    }
+
+    .toggle-button span {
+      margin-left: 10px;
+    }
+
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon.sun {
+      background: url('https://via.placeholder.com/20/FFA500?text=S') no-repeat center;
+    }
+
+    .icon.moon {
+      background: url('https://via.placeholder.com/20/87CEEB?text=M') no-repeat center;
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="toggle-container">
+    <button class="toggle-button" aria-label="Toggle Dark Mode">
+      <span class="icon sun"></span>
+      <span>Light Mode</span>
+    </button>
+  </div>
+
+  <script>
+    const body = document.body;
+    const toggleButton = document.querySelector('.toggle-button');
+    const icon = toggleButton.querySelector('.icon');
+    const label = toggleButton.querySelector('span:last-child');
+
+    // Initialize theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.setAttribute('data-theme', savedTheme);
+    updateToggleButton(savedTheme);
+
+    // Event listener for toggle button
+    toggleButton.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleButton(newTheme);
+    });
+
+    function updateToggleButton(theme) {
+      if (theme === 'dark') {
+        icon.classList.replace('sun', 'moon');
+        label.textContent = 'Dark Mode';
+      } else {
+        icon.classList.replace('moon', 'sun');
+        label.textContent = 'Light Mode';
+      }
+    }
+  </script>
+</body>
+</html>
